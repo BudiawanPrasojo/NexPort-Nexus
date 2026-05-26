@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="enhancements.css" />
 </head>
 
 <body>
@@ -85,7 +86,7 @@
             </svg></span>
           <span class="sidebar__label">Shipment</span>
         </a>
-        <a href="#monitoring" class="sidebar__link">
+        <a href="#vehicles-monitoring" class="sidebar__link">
           <span class="sidebar__icon"><svg viewBox="0 0 24 24">
               <path d="M4 16h16l-2-8H6l-2 8z" />
               <circle cx="7" cy="18" r="2" />
@@ -93,7 +94,7 @@
             </svg></span>
           <span class="sidebar__label">Vehicles</span>
         </a>
-        <a href="#monitoring" class="sidebar__link">
+        <a href="#drivers-monitoring" class="sidebar__link">
           <span class="sidebar__icon"><svg viewBox="0 0 24 24">
               <circle cx="12" cy="8" r="4" />
               <path d="M6 20c0-4 4-6 6-6s6 2 6 6" />
@@ -347,6 +348,99 @@
             </div>
           </article>
         </section>
+
+        <section id="vehicles-monitoring" class="section">
+          <header class="section-head section-head--row">
+            <div>
+              <span class="section-tag">Fleet Hub</span>
+              <h2 class="section-title">Vehicle Management</h2>
+              <section id="drivers-monitoring" class="section">
+                <header class="section-head section-head--row">
+                  <div>
+                    <span class="section-tag">Driver Hub</span>
+                    <h2 class="section-title">Driver Management</h2>
+                    <p class="section-desc">
+                      Monitoring driver operasional pelabuhan secara realtime.
+                    </p>
+                  </div>
+
+                  <div style="display:flex; gap:1rem; align-items:center;">
+                    <button type="button" id="btn-add-driver" class="record-badge action-admin-only" style="
+          background: rgba(60,242,255,0.15);
+          color: var(--cyan);
+          border: 1px solid var(--cyan);
+          cursor: pointer;
+          padding: 0.4rem 1.2rem;
+          font-weight: 600;
+          border-radius: 999px;
+        ">
+                      + New Driver
+                    </button>
+
+                    <span class="record-badge" id="driver-record-count">
+                      0 drivers
+                    </span>
+                  </div>
+                </header>
+
+                <article class="panel panel--table">
+                  <div class="table-scroll">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Driver Code</th>
+                          <th>Full Name</th>
+                          <th>License</th>
+                          <th>Shift</th>
+                          <th>Assigned Vehicle</th>
+                          <th>Status</th>
+                          <th>Performance</th>
+                        </tr>
+                      </thead>
+
+                      <tbody id="driver-table-body"></tbody>
+                    </table>
+                  </div>
+                </article>
+              </section>
+              <p class="section-desc">Monitor kendaraan operasional pelabuhan secara real-time.</p>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <button type="button" id="btn-add-vehicle" class="record-badge action-admin-only"
+                style="background: rgba(60, 242, 255, 0.15); color: var(--cyan); border: 1px solid var(--cyan); cursor: pointer; padding: 0.4rem 1.2rem; font-weight: 600; border-radius: 999px; transition: all 0.2s;">
+                + New Vehicle
+              </button>
+              <span class="record-badge" id="vehicle-record-count">0 fleets</span>
+            </div>
+          </header>
+          <article class="panel panel--table">
+            <div class="table-toolbar">
+              <div class="search-field">
+                <svg viewBox="0 0 24 24" width="18" height="18">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" fill="none" stroke-width="2" />
+                  <path d="M16 16l5 5" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <input type="search" id="vehicle-search" placeholder="Filter by Code, Driver, Plate, Type..." />
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Vehicle Code</th>
+                    <th>Driver</th>
+                    <th>License Plate</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Route</th>
+                    <th>Activity</th>
+                  </tr>
+                </thead>
+                <tbody id="vehicle-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
       </main>
 
       <footer class="footer">
@@ -381,78 +475,139 @@
         <button id="delete-container-btn"
           style="padding:0.7rem 1.2rem; border:none; border-radius:8px; background:var(--red); color:#fff; font-weight:700; cursor:pointer;">
           Delete Record
+        </button>
       </div>
     </div>
+  </div>
 
-    <div id="add-container-modal" class="modal-overlay" aria-hidden="true">
-      <div class="modal" role="dialog" aria-labelledby="add-modal-title" style="max-width: 580px;">
-        <div class="modal__glow"></div>
-        <button type="button" class="modal__close" id="close-add-modal" aria-label="Tutup">×</button>
-        <header class="modal__header">
-          <div>
-            <span class="modal__tag">Nexus Control</span>
-            <h2 id="add-modal-title" class="modal__title">Add New Container</h2>
-          </div>
-        </header>
-        <div class="modal__body">
-          <form id="add-container-form" class="modal__grid">
-            <div class="modal__field">
-              <label for="container-id">Container ID</label>
-              <input type="text" id="container-id" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
-                placeholder="e.g. TPK-1234-X" />
-            </div>
-            <div class="modal__field">
-              <label for="cargo-type">Cargo Type</label>
-              <input type="text" id="cargo-type" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
-                placeholder="e.g. Textiles" />
-            </div>
-            <div class="modal__field">
-              <label for="weight">Weight</label>
-              <input type="text" id="weight" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
-                placeholder="e.g. 20.0 ton" />
-            </div>
-            <div class="modal__field">
-              <label for="destination">Destination</label>
-              <input type="text" id="destination" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
-                placeholder="e.g. Tokyo" />
-            </div>
-            <div class="modal__field">
-              <label for="driver-name">Driver Name</label>
-              <input type="text" id="driver-name" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;" />
-            </div>
-            <div class="modal__field">
-              <label for="license-plate">License Plate</label>
-              <input type="text" id="license-plate" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
-                placeholder="e.g. B 1234 TPK" />
-            </div>
-            <div class="modal__field modal__field--full">
-              <label for="route">Route</label>
-              <input type="text" id="route" required
-                style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
-                placeholder="Terminal → Gate → Destination" />
-            </div>
-            <div class="modal__field modal__field--full"
-              style="display: flex; justify-content: flex-end; margin-top: 1rem;">
-              <button type="submit" id="save-container-btn"
-                style="background: linear-gradient(135deg, var(--cyan), var(--blue)); color: var(--bg-deep); border: none; padding: 0.65rem 1.75rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: var(--glow-cyan); transition: all 0.2s;">
-                Save Container
-              </button>
-            </div>
-          </form>
+  <div id="add-container-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="add-modal-title" style="max-width: 580px;">
+      <div class="modal__glow"></div>
+      <button type="button" class="modal__close" id="close-add-modal" aria-label="Tutup">×</button>
+      <header class="modal__header">
+        <div>
+          <span class="modal__tag">Nexus Control</span>
+          <h2 id="add-modal-title" class="modal__title">Add New Container</h2>
         </div>
+      </header>
+      <div class="modal__body">
+        <form id="add-container-form" class="modal__grid">
+          <div class="modal__field">
+            <label for="container-id">Container ID</label>
+            <input type="text" id="container-id" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
+              placeholder="e.g. TPK-1234-X" />
+          </div>
+          <div class="modal__field">
+            <label for="cargo-type">Cargo Type</label>
+            <input type="text" id="cargo-type" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
+              placeholder="e.g. Textiles" />
+          </div>
+          <div class="modal__field">
+            <label for="weight">Weight</label>
+            <input type="text" id="weight" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
+              placeholder="e.g. 20.0 ton" />
+          </div>
+          <div class="modal__field">
+            <label for="destination">Destination</label>
+            <input type="text" id="destination" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
+              placeholder="e.g. Tokyo" />
+          </div>
+          <div class="modal__field">
+            <label for="driver-name">Driver Name</label>
+            <input type="text" id="driver-name" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;" />
+          </div>
+          <div class="modal__field">
+            <label for="license-plate">License Plate</label>
+            <input type="text" id="license-plate" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
+              placeholder="e.g. B 1234 TPK" />
+          </div>
+          <div class="modal__field modal__field--full">
+            <label for="route">Route</label>
+            <input type="text" id="route" required
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;"
+              placeholder="Terminal → Gate → Destination" />
+          </div>
+          <div class="modal__field modal__field--full"
+            style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+            <button type="submit" id="save-container-btn"
+              style="background: linear-gradient(135deg, var(--cyan), var(--blue)); color: var(--bg-deep); border: none; padding: 0.65rem 1.75rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: var(--glow-cyan); transition: all 0.2s;">
+              Save Container
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="data.js"></script>
-    <script src="script.js"></script>
+  <div id="add-vehicle-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="vehicle-add-title" style="max-width: 580px;">
+      <div class="modal__glow"></div>
+      <button type="button" class="modal__close" id="close-add-vehicle-modal" aria-label="Tutup">×</button>
+      <header class="modal__header">
+        <div>
+          <span class="modal__tag">Fleet Intel</span>
+          <h2 id="vehicle-add-title" class="modal__title">Register New Vehicle</h2>
+        </div>
+      </header>
+      <div class="modal__body">
+        <form id="add-vehicle-form" class="modal__grid">
+          <div class="modal__field">
+            <label for="vehicle-code">Vehicle Code</label>
+            <input type="text" id="vehicle-code" required placeholder="e.g. TRK-4510" />
+          </div>
+          <div class="modal__field">
+            <label for="vehicle-driver-name">Driver Name</label>
+            <input type="text" id="vehicle-driver-name" required placeholder="Nama pengemudi" />
+          </div>
+          <div class="modal__field">
+            <label for="vehicle-license-plate">License Plate</label>
+            <input type="text" id="vehicle-license-plate" required placeholder="e.g. B 9021 TPK" />
+          </div>
+          <div class="modal__field">
+            <label for="vehicle-type">Vehicle Type</label>
+            <input type="text" id="vehicle-type" required placeholder="e.g. Container Truck" />
+          </div>
+          <div class="modal__field">
+            <label for="vehicle-status">Status</label>
+            <select id="vehicle-status"
+              style="width: 100%; padding: 0.6rem; background: var(--bg-deep); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text); outline: none;">
+              <option value="Active">Active (Operasional)</option>
+              <option value="Idle">Idle (Standby)</option>
+              <option value="Maintenance">Maintenance (Perbaikan)</option>
+            </select>
+          </div>
+          <div class="modal__field">
+            <label for="vehicle-route">Operational Route</label>
+            <input type="text" id="vehicle-route" required placeholder="e.g. Yard C → Gate Out" />
+          </div>
+          <div class="modal__field modal__field--full">
+            <label for="vehicle-last-activity">Last Activity Logs</label>
+            <input type="text" id="vehicle-last-activity" required placeholder="e.g. Loading completion check" />
+          </div>
+          <div class="modal__field modal__field--full modal__actions">
+            <button type="button" id="delete-vehicle-btn" class="modal__btn modal__btn--danger" style="display:none;">
+              Delete Vehicle
+            </button>
+            <button type="submit" id="save-vehicle-btn" class="modal__btn modal__btn--primary">
+              Save Vehicle Record
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+  <script src="enhancements.js"></script>
 </body>
 
 </html>
