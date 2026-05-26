@@ -1,0 +1,587 @@
+/* ==========================================================================
+   NexPort Nexus — Enhancement Patch v1.0 (Batch 1)
+   File: enhancements.css
+   Scope: Responsive + Filter System + Export + Validation + Loading States
+   Catatan: Jangan hapus file ini. Semua rule bersifat additive.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. RESPONSIVE TABLES — horizontal scroll + sticky header fix
+   ========================================================================== */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+/* Minimum column widths agar tabel tidak kolaps */
+.data-table th,
+.data-table td {
+  white-space: nowrap;
+  min-width: 90px;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  min-width: 120px;
+}
+
+/* Kolom Route & Activity boleh wrap di layar kecil */
+.data-table th:last-child,
+.data-table td:last-child {
+  white-space: normal;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+/* ==========================================================================
+   2. RESPONSIVE KPI CARDS — fallback ukuran + teks wrapping
+   ========================================================================== */
+.kpi-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.kpi-card__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpi-card__label,
+.kpi-card__delta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   3. RESPONSIVE MODAL — max-height scroll & safe area
+   ========================================================================== */
+.modal-overlay {
+  padding: env(safe-area-inset-top, 1rem) env(safe-area-inset-right, 1rem)
+    env(safe-area-inset-bottom, 1rem) env(safe-area-inset-left, 1rem);
+}
+
+.modal {
+  max-height: 92dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   4. RESPONSIVE CHARTS — aspect-ratio clamp
+   ========================================================================== */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 180px;
+}
+
+.chart-wrap--lg {
+  min-height: 220px;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE PORT MAP — fullwidth on mobile
+   ========================================================================== */
+.port-map {
+  width: 100%;
+  overflow: hidden;
+}
+
+.port-map__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   6. ADVANCED FILTER BAR — container, vehicle, driver sections
+   ========================================================================== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  align-items: center;
+}
+
+.filter-bar__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 0.25rem;
+}
+
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--bg-mid);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.8rem;
+  padding: 0.38rem 2rem 0.38rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  min-width: 130px;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px rgba(60, 242, 255, 0.18);
+}
+
+.filter-select option {
+  background: var(--bg-mid);
+  color: var(--text);
+}
+
+.filter-bar__reset {
+  background: transparent;
+  border: 1px solid rgba(255, 93, 115, 0.4);
+  border-radius: 8px;
+  color: var(--red);
+  font-size: 0.78rem;
+  padding: 0.38rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none; /* tampil hanya jika ada filter aktif */
+}
+
+.filter-bar__reset.is-visible {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.filter-bar__reset:hover {
+  background: rgba(255, 93, 115, 0.12);
+  border-color: var(--red);
+}
+
+/* ==========================================================================
+   7. EXPORT CSV BUTTON
+   ========================================================================== */
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  border-radius: 999px;
+  color: var(--emerald);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  background: rgba(74, 222, 128, 0.22);
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-export svg {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   8. FORM VALIDATION — field error state
+   ========================================================================== */
+.field-error {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 2px rgba(255, 93, 115, 0.2) !important;
+}
+
+.field-error-msg {
+  display: block;
+  color: var(--red);
+  font-size: 0.73rem;
+  margin-top: 0.3rem;
+  animation: fadeInDown 0.18s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wrapper modal__field mendukung pesan error */
+.modal__field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   9. BUTTON LOADING STATE
+   ========================================================================== */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.78;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==========================================================================
+   UI FIX PATCH — Vehicle Modal Action Buttons
+   Replaces broken nested-button layout with proper sibling row
+   ========================================================================== */
+
+/* Action row: delete left (hidden by default), save right */
+.modal__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+/* Base button token */
+.modal__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.6rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary — cyan gradient (Save) */
+.modal__btn--primary {
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  color: var(--bg-deep);
+  box-shadow: var(--glow-cyan);
+}
+
+.modal__btn--primary:hover {
+  box-shadow: 0 0 32px rgba(60, 242, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.modal__btn--primary:active {
+  transform: translateY(0);
+}
+
+/* Danger — red outlined (Delete) */
+.modal__btn--danger {
+  background: rgba(255, 93, 115, 0.1);
+  color: var(--red);
+  border: 1px solid rgba(255, 93, 115, 0.45);
+  box-shadow: none;
+}
+
+.modal__btn--danger:hover {
+  background: rgba(255, 93, 115, 0.2);
+  border-color: var(--red);
+  box-shadow: 0 0 20px rgba(255, 93, 115, 0.2);
+  transform: translateY(-1px);
+}
+
+.modal__btn--danger:active {
+  transform: translateY(0);
+}
+
+/* Delete sits on the left, pushes save to right */
+.modal__actions .modal__btn--danger {
+  margin-right: auto;
+}
+
+/* Mobile: stack buttons full-width */
+@media (max-width: 480px) {
+  .modal__actions {
+    flex-direction: column-reverse;
+    gap: 0.6rem;
+  }
+
+  .modal__btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal__actions .modal__btn--danger {
+    margin-right: 0;
+  }
+}
+
+/* Tablet: filter bar stacks */
+@media (max-width: 768px) {
+  .filter-bar {
+    gap: 0.4rem;
+  }
+
+  .filter-select {
+    min-width: 110px;
+    font-size: 0.75rem;
+  }
+
+  .btn-export {
+    font-size: 0.75rem;
+    padding: 0.38rem 0.9rem;
+  }
+
+  /* Section head aksi berkolom */
+  .section-head--row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .section-head--row > div:last-child {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Topbar search jadi full width */
+  .topbar__search-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Topbar actions compress */
+  .topbar__actions {
+    gap: 0.5rem;
+  }
+}
+
+/* Mobile kecil */
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .kpi-card__value {
+    font-size: 1.4rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  /* Port map legend wrap */
+  .map-legend {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  /* FAB group lebih ke bawah */
+  .fab-group {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+
+  /* Modal fullscreen di mobile kecil */
+  .modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: var(--radius) var(--radius) 0 0;
+    margin-top: auto;
+    margin-bottom: 0;
+    max-height: 96dvh;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE POLISHING — MOBILE & TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+  .main {
+    padding: 1rem;
+  }
+
+  .charts-bento {
+    grid-template-columns: 1fr !important;
+  }
+
+  .intel-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .panel--wide {
+    grid-column: span 1 !important;
+  }
+
+  .topbar {
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+
+  .topbar__search-wrap {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .main {
+    padding: 0.8rem;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 1rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .charts-bento {
+    gap: 1rem;
+  }
+
+  .panel {
+    border-radius: 18px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .data-table {
+    min-width: 900px;
+  }
+
+  .modal {
+    width: calc(100% - 1.2rem);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .modal__grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fab-group {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .topbar__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sidebar {
+    width: 270px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .section-title {
+    font-size: 1.4rem !important;
+  }
+
+  .panel {
+    padding: 1rem;
+  }
+
+  .topbar__profile {
+    display: none;
+  }
+
+  .fab {
+    width: 52px;
+    height: 52px;
+  }
+
+  .record-badge {
+    font-size: 0.75rem;
+  }
+}
+
+/* =========================================================
+   Vehicle Modal Actions
+========================================================= */
+
+.vehicle-modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.vehicle-modal-actions button {
+  min-width: 140px;
+}
+
+.btn-delete-vehicle {
+  background: rgba(255, 93, 115, 0.12);
+  border: 1px solid rgba(255, 93, 115, 0.45);
+  color: #ff5d73;
+}
+
+.btn-delete-vehicle:hover {
+  background: rgba(255, 93, 115, 0.2);
+}
