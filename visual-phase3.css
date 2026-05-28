@@ -1,0 +1,1017 @@
+/* ==========================================================================
+   NexPort Nexus — Phase 3: Color · Font · Motion System Refinement
+   File: visual-phase3.css
+   Scope: Industrial Teal Palette · Enterprise Typography · Premium Motion
+   Rules: Additive override patch. Preserves Phase 1 + Phase 2 systems.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. COLOR SYSTEM — Industrial Dark Teal Identity
+   ========================================================================== */
+:root {
+  /* --- Core backgrounds --- */
+  --bg-deep:    #0B1420;
+  --bg-mid:     #0f1e35;
+  --card:       rgba(15, 23, 42, 0.92);
+  --card-hover: rgba(20, 30, 52, 0.97);
+
+  /* --- Primary accent: Industrial Teal --- */
+  --cyan:    #14B8A6;
+  --blue:    #38BDF8;
+
+  /* --- Semantic palette --- */
+  --emerald: #22C55E;
+  --orange:  #F59E0B;
+  --red:     #EF4444;
+
+  /* --- Text --- */
+  --text:      #E8EDF5;
+  --text-soft: #7C8FA8;
+  --text-mute: #4A5568;
+
+  /* --- Glass & borders (desaturated, mature) --- */
+  --glass:        rgba(15, 23, 42, 0.72);
+  --glass-border: rgba(20, 184, 166, 0.18);
+
+  /* --- Glow system — softened, industrial --- */
+  --glow-cyan:    0 0 16px rgba(20, 184, 166, 0.22);
+  --glow-soft:    0 0 32px rgba(20, 184, 166, 0.08);
+  --glow-blue:    0 0 20px rgba(56, 189, 248, 0.12);
+
+  /* --- Shadows — deeper, more grounded --- */
+  --shadow-deep:  0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-card:  0 4px 16px rgba(0, 0, 0, 0.45);
+
+  /* --- Motion system --- */
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:     0.15s;
+  --dur-base:     0.25s;
+  --dur-slow:     0.4s;
+
+  /* --- Blur --- */
+  --blur: 16px;
+
+  /* --- Radius --- */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+/* ==========================================================================
+   2. BACKGROUND & ATMOSPHERE — Subtle Industrial Depth
+   ========================================================================== */
+body {
+  background: var(--bg-deep);
+  color: var(--text);
+}
+
+/* Atmosphere orbs — muted, less neon */
+.atmosphere__orb--1 {
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.14), transparent 70%);
+  opacity: 0.5;
+}
+
+.atmosphere__orb--2 {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.1), transparent 70%);
+  opacity: 0.4;
+}
+
+.atmosphere__orb--3 {
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.06), transparent 70%);
+  opacity: 0.35;
+}
+
+/* Grid — barely visible, industrial feel */
+.atmosphere__grid {
+  background-image:
+    linear-gradient(rgba(20, 184, 166, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 184, 166, 0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Scan line — very subtle */
+.atmosphere__scan {
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(20, 184, 166, 0.015) 50%,
+    transparent 100%);
+  background-size: 100% 300%;
+  animation: scan-line 12s linear infinite;
+}
+
+/* Slow orb float */
+.atmosphere__orb {
+  animation: orb-float 24s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   3. SIDEBAR — Industrial Teal Refinement
+   ========================================================================== */
+.sidebar {
+  background: linear-gradient(180deg,
+    rgba(11, 20, 32, 0.97) 0%,
+    rgba(7, 14, 24, 0.99) 100%);
+  border-right: 1px solid rgba(20, 184, 166, 0.12);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Brand name gradient — teal to white */
+.sidebar__brand-name {
+  background: linear-gradient(135deg, var(--text) 30%, var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Logo glow — subtle teal */
+.brand-logo__glow {
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.25), transparent 70%);
+}
+
+/* Nav links */
+.sidebar__link {
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-base) var(--ease),
+              background var(--dur-base) var(--ease),
+              border-color var(--dur-base) var(--ease);
+}
+
+.sidebar__link:hover {
+  color: var(--text);
+  background: rgba(20, 184, 166, 0.07);
+  border-color: rgba(20, 184, 166, 0.15);
+}
+
+.sidebar__link--active {
+  color: var(--cyan);
+  background: linear-gradient(90deg, rgba(20, 184, 166, 0.12), transparent);
+  border-color: rgba(20, 184, 166, 0.28);
+  box-shadow: inset 0 0 20px rgba(20, 184, 166, 0.05);
+}
+
+/* Active indicator bar */
+.sidebar__link::before {
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
+}
+
+/* Sidebar badge */
+.sidebar__badge {
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  font-size: 0.5rem;
+  padding: 0.12rem 0.4rem;
+}
+
+/* Collapse button */
+.sidebar__collapse {
+  border-color: rgba(20, 184, 166, 0.18);
+  background: rgba(20, 184, 166, 0.05);
+  color: var(--cyan);
+  transition: all var(--dur-base) var(--ease);
+}
+
+.sidebar__collapse:hover {
+  background: rgba(20, 184, 166, 0.12);
+  box-shadow: var(--glow-cyan);
+}
+
+/* Footer status */
+.sidebar__status {
+  color: var(--emerald);
+  font-size: 0.68rem;
+}
+
+/* ==========================================================================
+   4. TOPBAR — Clean Enterprise Header
+   ========================================================================== */
+.topbar {
+  background: rgba(11, 20, 32, 0.82);
+  border-bottom: 1px solid rgba(20, 184, 166, 0.1);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+}
+
+/* Search */
+.topbar__search-wrap input,
+.search-field input {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(20, 184, 166, 0.15);
+  color: var(--text);
+  transition: border-color var(--dur-base) var(--ease),
+              box-shadow var(--dur-base) var(--ease);
+}
+
+.topbar__search-wrap input:focus,
+.search-field input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+}
+
+/* Live badge */
+.topbar__live {
+  color: var(--emerald);
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.07);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+}
+
+/* Clock */
+.topbar__clock {
+  color: var(--text-soft);
+  border-color: rgba(20, 184, 166, 0.12);
+  background: rgba(20, 184, 166, 0.04);
+  font-size: 0.72rem;
+}
+
+/* Avatar */
+.topbar__avatar {
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.25);
+}
+
+/* ==========================================================================
+   5. GLASS PANELS — Mature, Grounded Depth
+   ========================================================================== */
+.panel {
+  background: var(--glass);
+  border-color: var(--glass-border);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius);
+  transition:
+    border-color var(--dur-base) var(--ease),
+    box-shadow var(--dur-base) var(--ease);
+}
+
+/* Gradient border — very subtle */
+.panel::before {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 184, 166, 0.22),
+    transparent 45%,
+    rgba(56, 189, 248, 0.1)
+  );
+  opacity: 0.5;
+}
+
+.panel:hover {
+  border-color: rgba(20, 184, 166, 0.3);
+  box-shadow: var(--shadow-deep), var(--glow-soft);
+}
+
+/* ==========================================================================
+   6. KPI CARDS — Premium Analytics Cards
+   ========================================================================== */
+.kpi-card {
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease),
+    border-color var(--dur-base) var(--ease);
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-deep), 0 0 16px rgba(20, 184, 166, 0.1);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+/* KPI top-edge accent line */
+.kpi-card::after {
+  opacity: 0.6;
+}
+
+/* KPI color variants — industrial teal */
+.kpi-card--cyan .kpi-card__icon {
+  background: rgba(20, 184, 166, 0.1);
+  color: var(--cyan);
+  --accent-color: var(--cyan);
+}
+
+.kpi-card--blue .kpi-card__icon {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--blue);
+  --accent-color: var(--blue);
+}
+
+.kpi-card--emerald .kpi-card__icon {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--emerald);
+  --accent-color: var(--emerald);
+}
+
+.kpi-card--orange .kpi-card__icon {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--orange);
+  --accent-color: var(--orange);
+}
+
+.kpi-card--red .kpi-card__icon {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--red);
+  --accent-color: var(--red);
+}
+
+/* KPI value — stronger, cleaner */
+.kpi-card__value {
+  color: var(--text);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+/* KPI label */
+.kpi-card__label {
+  color: var(--text-soft);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* KPI delta */
+.kpi-card__delta--up { color: var(--emerald); }
+.kpi-card__delta--alert { color: var(--red); }
+
+/* ==========================================================================
+   7. SECTION TYPOGRAPHY — Enterprise Hierarchy
+   ========================================================================== */
+
+/* Section tags — clean operational labels */
+.section-tag {
+  color: var(--cyan);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.section-tag--ai {
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section titles */
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.section-title--sm {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+/* Section description */
+.section-desc {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-top: 0.2rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Panel header */
+.panel__head h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.panel__live {
+  font-size: 0.6rem;
+  color: var(--emerald);
+  letter-spacing: 0.06em;
+  animation: pulse-text 3s ease infinite;
+}
+
+/* Section head styling */
+.section-head {
+  margin-bottom: 1.1rem;
+}
+
+/* Meta chip */
+.meta-chip--live {
+  color: var(--emerald);
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.07);
+  font-size: 0.6rem;
+}
+
+/* ==========================================================================
+   8. TACTICAL MAP — Industrial Teal Treatment
+   ========================================================================== */
+.panel--map {
+  border-color: rgba(20, 184, 166, 0.22);
+  box-shadow:
+    0 0 40px rgba(20, 184, 166, 0.1),
+    0 0 80px rgba(20, 184, 166, 0.05),
+    var(--shadow-deep);
+}
+
+/* Top glow edge */
+.panel--map::after {
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(20, 184, 166, 0.7),
+    rgba(56, 189, 248, 0.5),
+    transparent);
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.4);
+  opacity: 0.8;
+}
+
+/* Map title */
+#port-map .section-title {
+  background: linear-gradient(135deg, var(--text) 20%, var(--cyan) 65%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.4rem;
+}
+
+/* Map background */
+.port-map {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 25%,
+      rgba(20, 184, 166, 0.05), transparent 60%),
+    radial-gradient(ellipse 40% 35% at 80% 70%,
+      rgba(56, 189, 248, 0.03), transparent 55%);
+}
+
+/* HUD */
+.map-hud {
+  color: var(--cyan);
+  background: rgba(11, 20, 32, 0.8);
+  border-bottom-color: rgba(20, 184, 166, 0.14);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+}
+
+.map-hud span::before {
+  background: var(--cyan);
+  box-shadow: 0 0 4px rgba(20, 184, 166, 0.6);
+}
+
+/* Legend */
+.map-legend {
+  border-color: rgba(20, 184, 166, 0.15);
+  background: rgba(11, 20, 32, 0.6);
+}
+
+/* Zone core colors — same semantics, new teal accent */
+.map-zone--low .zone-core {
+  fill: var(--emerald);
+  filter: drop-shadow(0 0 3px rgba(34, 197, 94, 0.6));
+}
+
+.map-zone--medium .zone-core {
+  fill: var(--orange);
+  filter: drop-shadow(0 0 3px rgba(245, 158, 11, 0.6));
+}
+
+.map-zone--high .zone-core {
+  fill: var(--red);
+  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.6));
+}
+
+/* Radar — softer */
+.map-radar {
+  border-color: rgba(20, 184, 166, 0.12);
+  opacity: 0.35;
+}
+
+/* Map tooltip */
+.map-tooltip {
+  border-color: var(--cyan);
+  background: rgba(11, 20, 32, 0.97);
+  box-shadow: var(--glow-cyan), var(--shadow-card);
+  font-size: 0.75rem;
+}
+
+.map-tooltip strong {
+  color: var(--cyan);
+  font-size: 0.82rem;
+}
+
+/* ==========================================================================
+   9. INTELLIGENCE ROW — AI + Activity Feed
+   ========================================================================== */
+
+/* AI insight cards */
+.ai-insight {
+  background: rgba(11, 20, 32, 0.6);
+  border-color: rgba(20, 184, 166, 0.14);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color var(--dur-base) var(--ease),
+    background var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.ai-insight:hover {
+  border-color: rgba(20, 184, 166, 0.3);
+  background: rgba(20, 184, 166, 0.04);
+  transform: translateX(3px);
+  box-shadow: none;
+}
+
+.ai-insight__conf {
+  color: var(--cyan);
+  font-size: 0.56rem;
+  letter-spacing: 0.07em;
+}
+
+/* AI icon variants */
+.ai-insight--warning .ai-insight__icon {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--orange);
+}
+
+.ai-insight--success .ai-insight__icon {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--emerald);
+}
+
+.ai-insight--critical .ai-insight__icon {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--red);
+}
+
+.ai-insight--info .ai-insight__icon {
+  background: rgba(20, 184, 166, 0.1);
+  color: var(--cyan);
+}
+
+/* Activity feed items — clean operational entries */
+.activity-item {
+  background: rgba(11, 20, 32, 0.55);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: background var(--dur-fast) var(--ease);
+  animation: feed-in 0.3s var(--ease-out);
+}
+
+.activity-item:hover {
+  background: rgba(20, 184, 166, 0.04);
+}
+
+.activity-item__time {
+  color: var(--text-mute);
+  font-size: 0.6rem;
+}
+
+/* Feed colors — updated to new palette */
+.activity-item--info    { --feed-color: var(--cyan); }
+.activity-item--success { --feed-color: var(--emerald); }
+.activity-item--delay   { --feed-color: var(--red); }
+.activity-item--congestion { --feed-color: var(--orange); }
+
+/* Section panel wrappers */
+.section--ai,
+.section--feed {
+  border-color: rgba(20, 184, 166, 0.14);
+  background: rgba(11, 20, 32, 0.5);
+}
+
+.section--ai .section-head,
+.section--feed .section-head {
+  border-bottom-color: rgba(20, 184, 166, 0.1);
+}
+
+/* Activity log items */
+.activity-log-item {
+  background: rgba(11, 20, 32, 0.5);
+  border-left-color: rgba(20, 184, 166, 0.22);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+
+.activity-log-item:hover {
+  border-color: rgba(20, 184, 166, 0.5);
+  background: rgba(20, 184, 166, 0.04);
+}
+
+/* ==========================================================================
+   10. ANALYTICS CHARTS — Refined Panel Styling
+   ========================================================================== */
+.panel--chart {
+  background: rgba(11, 20, 32, 0.75);
+  border-color: rgba(20, 184, 166, 0.14);
+}
+
+.panel--chart:hover {
+  border-color: rgba(20, 184, 166, 0.28);
+  box-shadow: var(--shadow-deep), var(--glow-soft);
+}
+
+/* ==========================================================================
+   11. DATA TABLES — Industrial Monochrome Style
+   ========================================================================== */
+.panel--table {
+  background: rgba(11, 20, 32, 0.75);
+}
+
+.data-table thead tr {
+  background: rgba(11, 20, 32, 0.85);
+}
+
+.data-table thead th {
+  color: var(--text-soft);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom-color: rgba(20, 184, 166, 0.14);
+}
+
+.data-table tbody tr {
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.data-table tbody tr:hover {
+  background: rgba(20, 184, 166, 0.04);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   12. BADGES & STATUS INDICATORS
+   ========================================================================== */
+.badge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: 4px;
+}
+
+/* Record count badges */
+.record-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+/* Role badge */
+.role-badge--admin {
+  background: rgba(20, 184, 166, 0.12);
+  color: var(--cyan);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   13. PULSE & LIVE INDICATORS — Refined
+   ========================================================================== */
+
+/* Global pulse ring — teal brand */
+.pulse-ring {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--emerald);
+  animation: pulse-expand 2.5s ease-out infinite;
+  opacity: 0;
+}
+
+.pulse-ring--sm {
+  width: 6px;
+  height: 6px;
+}
+
+.pulse-ring--sm::before {
+  inset: -3px;
+}
+
+@keyframes pulse-expand {
+  0%   { opacity: 0.7; transform: scale(0.85); }
+  100% { opacity: 0;   transform: scale(2.2); }
+}
+
+/* Text pulse — slower, less distracting */
+@keyframes pulse-text {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* Signal dots in logo */
+@keyframes signal-pulse {
+  0%, 100% { opacity: 0.9; }
+  50%       { opacity: 0.35; }
+}
+
+/* Logo glow — subtle */
+@keyframes logo-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.06); }
+}
+
+/* Orb float — slow and smooth */
+@keyframes orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(24px, -16px) scale(1.04); }
+  66%       { transform: translate(-16px, 12px) scale(0.97); }
+}
+
+/* Feed animation — cleaner entrance */
+@keyframes feed-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Scan line — barely visible */
+@keyframes scan-line {
+  0%   { background-position: 0 -200%; }
+  100% { background-position: 0 200%; }
+}
+
+/* ==========================================================================
+   14. NOTIFICATION SYSTEM — Teal-tuned
+   ========================================================================== */
+.notification-btn {
+  color: var(--text-soft);
+  background: rgba(20, 184, 166, 0.06);
+  border: 1px solid rgba(20, 184, 166, 0.15);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur-base) var(--ease);
+}
+
+.notification-btn:hover {
+  color: var(--text);
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+.notification-count {
+  background: var(--red);
+  font-size: 0.55rem;
+  font-weight: 800;
+  border-radius: 999px;
+  min-width: 16px;
+  height: 16px;
+}
+
+.notification-panel {
+  background: rgba(11, 20, 32, 0.97);
+  border-color: rgba(20, 184, 166, 0.18);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+}
+
+.notification-panel__header {
+  border-bottom-color: rgba(20, 184, 166, 0.12);
+}
+
+.notification-panel__header h3 {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.notification-item {
+  border-bottom-color: rgba(20, 184, 166, 0.08);
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.notification-item:hover {
+  background: rgba(20, 184, 166, 0.05);
+}
+
+/* ==========================================================================
+   15. TOAST NOTIFICATIONS — Refined Motion
+   ========================================================================== */
+.toast {
+  background: rgba(11, 20, 32, 0.97);
+  border-color: rgba(20, 184, 166, 0.2);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  box-shadow: var(--shadow-deep), var(--glow-soft);
+  animation: toast-in var(--dur-slow) var(--ease-out);
+}
+
+.toast--congestion { border-left-color: var(--orange); }
+.toast--delay      { border-left-color: var(--red); }
+.toast--success    { border-left-color: var(--emerald); }
+.toast--info       { border-left-color: var(--cyan); }
+
+.toast.is-leaving {
+  animation: toast-out var(--dur-slow) var(--ease) forwards;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(100%) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(110%); }
+}
+
+/* ==========================================================================
+   16. MODAL — Premium Enterprise Style
+   ========================================================================== */
+.modal {
+  background: rgba(11, 20, 32, 0.97);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  box-shadow: var(--shadow-deep), var(--glow-soft);
+}
+
+.modal__glow {
+  background: radial-gradient(ellipse,
+    rgba(20, 184, 166, 0.08), transparent 60%);
+}
+
+.modal__close {
+  border-color: rgba(20, 184, 166, 0.18);
+  background: rgba(20, 184, 166, 0.05);
+  color: var(--text-soft);
+  transition: all var(--dur-base) var(--ease);
+}
+
+.modal__close:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.modal__tag { color: var(--cyan); }
+
+.modal__field input[type="text"] {
+  background: rgba(7, 14, 24, 0.75) !important;
+  border-color: rgba(20, 184, 166, 0.18) !important;
+  color: var(--text);
+}
+
+.modal__field input[type="text"]:focus {
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12) !important;
+}
+
+/* ==========================================================================
+   17. FAB CONTROLS — Teal Treatment
+   ========================================================================== */
+.fab {
+  background: var(--glass);
+  border-color: rgba(20, 184, 166, 0.2);
+  color: var(--cyan);
+  transition:
+    box-shadow var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease-spring),
+    background var(--dur-base) var(--ease);
+}
+
+.fab:hover {
+  box-shadow: var(--glow-cyan);
+  transform: scale(1.06);
+}
+
+.fab--main {
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  color: var(--bg-deep);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ==========================================================================
+   18. PDF EXPORT BUTTON — Refined
+   ========================================================================== */
+.nexport-pdf-btn {
+  border-color: rgba(20, 184, 166, 0.2);
+  background: rgba(20, 184, 166, 0.06);
+  color: var(--text-soft);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  transition: all var(--dur-base) var(--ease);
+}
+
+.nexport-pdf-btn:hover {
+  background: rgba(20, 184, 166, 0.12);
+  color: var(--cyan);
+  border-color: rgba(20, 184, 166, 0.35);
+}
+
+/* ==========================================================================
+   19. SKELETON LOADER — Teal Brand
+   ========================================================================== */
+.skeleton-loader {
+  background: var(--bg-deep);
+}
+
+.skeleton-loader__pulse {
+  border-color: rgba(20, 184, 166, 0.2);
+  border-top-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.skeleton-loader__text {
+  color: var(--cyan);
+  letter-spacing: 0.14em;
+}
+
+/* ==========================================================================
+   20. SCROLLBAR — Teal-Tinted
+   ========================================================================== */
+::-webkit-scrollbar-thumb {
+  background: rgba(20, 184, 166, 0.12);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 184, 166, 0.28);
+}
+
+/* ==========================================================================
+   21. PROFILE DROPDOWN — Refined
+   ========================================================================== */
+.profile-dropdown {
+  background: rgba(11, 20, 32, 0.98);
+  border: 1px solid rgba(20, 184, 166, 0.18);
+  box-shadow: var(--shadow-deep), var(--glow-soft);
+}
+
+.profile-dropdown__divider {
+  background: rgba(20, 184, 166, 0.1);
+}
+
+.profile-dropdown__item {
+  color: var(--text-soft);
+  transition: color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+
+.profile-dropdown__item:hover {
+  color: var(--red);
+  background: rgba(239, 68, 68, 0.07);
+}
+
+/* ==========================================================================
+   22. LINK / BUTTON BASE INTERACTIONS — Smooth enterprise feel
+   ========================================================================== */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Table action button refinement */
+.data-table .badge {
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+/* Heatmap legend text */
+.heatmap-legend {
+  color: var(--text-soft);
+  font-size: 0.65rem;
+}
+
+/* ==========================================================================
+   23. FOOTER — Minimal
+   ========================================================================== */
+.footer {
+  border-top-color: rgba(20, 184, 166, 0.08);
+}
+
+.footer p { color: var(--text-mute); }
+.footer strong { color: var(--cyan); }
+
+/* ==========================================================================
+   24. SIDEBAR OVERLAY — Tuned
+   ========================================================================== */
+.sidebar-overlay {
+  background: rgba(7, 14, 24, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+/* ==========================================================================
+   25. RESPONSIVE — Phase 3 motion safety
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   END NexPort Nexus — Phase 3 Visual System Refinement
+   ========================================================================== */

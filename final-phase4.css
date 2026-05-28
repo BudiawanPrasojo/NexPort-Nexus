@@ -1,0 +1,881 @@
+/* ==========================================================================
+   NexPort Nexus — Phase 4: Final Enterprise Cleanup & Stabilization
+   File: final-phase4.css
+   Scope: Responsive · Consistency · Overflow · Performance · Polish
+   Rules: Additive patch. Preserves all Phase 1-3 systems intact.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. GLOBAL CONSISTENCY — Box model & base fixes
+   ========================================================================== */
+
+/* Prevent any horizontal overflow at root level */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Remove lingering CRLF-caused whitespace on block elements */
+.main > * {
+  min-width: 0;
+}
+
+/* Ensure consistent font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ==========================================================================
+   2. SIDEBAR — Responsive Stabilization
+   ========================================================================== */
+
+/* Sidebar z-index stack — above everything except modals */
+.sidebar { z-index: 200; }
+.topbar  { z-index: 100; }
+.modal-overlay { z-index: 1000; }
+
+/* Sidebar collapsed: hide text labels cleanly */
+body.sidebar-collapsed .sidebar__label,
+body.sidebar-collapsed .sidebar__brand-text,
+body.sidebar-collapsed .sidebar__section,
+body.sidebar-collapsed .sidebar__badge,
+body.sidebar-collapsed .sidebar__ver {
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Collapsed sidebar nav link: center icon */
+body.sidebar-collapsed .sidebar__link {
+  justify-content: center;
+  padding: 0.7rem;
+}
+
+/* Sidebar footer collapsed: hide text */
+body.sidebar-collapsed .sidebar__footer span:not(.pulse-ring) {
+  display: none;
+}
+
+/* ==========================================================================
+   3. TOPBAR — Overflow & Alignment
+   ========================================================================== */
+.topbar {
+  overflow: hidden; /* Prevent topbar from bleeding */
+}
+
+.topbar__actions {
+  flex-shrink: 0;
+  gap: 0.75rem;
+}
+
+/* Prevent search bar from crushing actions */
+.topbar__search-wrap {
+  flex: 1;
+  min-width: 0;
+  max-width: 380px;
+}
+
+.topbar__search-wrap input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Profile email truncation */
+#profile-email {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  font-size: 0.76rem;
+}
+
+/* ==========================================================================
+   4. KPI GRID — Final Responsive Consistency
+   ========================================================================== */
+
+/* Base: 4-column at mid-large screens (less cramped than 6) */
+.kpi-grid {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+/* KPI card min-width guard */
+.kpi-card {
+  min-width: 0;
+  width: 100%;
+}
+
+/* KPI value — ellipsis safety */
+.kpi-card__value,
+.kpi-card__label,
+.kpi-card__delta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   5. TACTICAL MAP — Stable Sizing
+   ========================================================================== */
+.panel--map {
+  width: 100%;
+  overflow: hidden;
+}
+
+.port-map {
+  width: 100%;
+  overflow: hidden;
+}
+
+.port-map__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Map tooltip — prevent overflow on small screens */
+.map-tooltip {
+  max-width: min(280px, 90vw);
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* ==========================================================================
+   6. INTELLIGENCE ROW — Column Stability
+   ========================================================================== */
+.intel-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+  min-width: 0;
+}
+
+.intel-row > * {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Activity feed — prevent text overflow */
+.activity-item {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.activity-item > span,
+.activity-item > div {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Activity log items — text safety */
+.activity-log-item {
+  overflow: hidden;
+}
+
+.activity-log-item__time {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   7. ANALYTICS CHARTS — Stable Bento
+   ========================================================================== */
+.charts-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.panel--wide {
+  grid-column: span 2;
+}
+
+/* Chart containers — prevent height collapse */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.chart-wrap--lg {
+  height: 240px;
+}
+
+.chart-wrap canvas {
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   8. DATA TABLES — Consistent Enterprise Style
+   ========================================================================== */
+
+/* Table panel overflow guard */
+.panel--table {
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Toolbar alignment */
+.table-toolbar {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid rgba(20, 184, 166, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 200px;
+  max-width: 380px;
+}
+
+/* Table sticky header with new palette */
+.data-table th {
+  background: rgba(7, 14, 24, 0.97);
+  border-bottom-color: rgba(20, 184, 166, 0.12);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-soft);
+  padding: 0.85rem 1rem;
+}
+
+/* Table row hover — teal accent */
+.data-table tbody tr:hover {
+  background: rgba(20, 184, 166, 0.04);
+  box-shadow: inset 3px 0 0 var(--cyan);
+}
+
+.data-table tr:focus-within {
+  background: rgba(20, 184, 166, 0.05);
+}
+
+/* Table row dividers — teal-keyed */
+.data-table td {
+  border-bottom-color: rgba(20, 184, 166, 0.06);
+  font-size: 0.79rem;
+  padding: 0.8rem 1rem;
+  vertical-align: middle;
+}
+
+/* First column — teal ID emphasis */
+.data-table td:first-child {
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+/* Empty state styling */
+.data-table .table-empty {
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  background: transparent;
+  padding: 3rem 1rem !important;
+  white-space: normal;
+  text-align: center;
+}
+
+/* Record badge — consistent with Phase 3 */
+.record-badge {
+  border-color: rgba(20, 184, 166, 0.2);
+  background: rgba(20, 184, 166, 0.06);
+  color: var(--text-soft);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   9. HEATMAP — Palette Alignment
+   ========================================================================== */
+
+/* Override hardcoded rgba(0,255,180,x) in satellite CSS files */
+.ai-forecast-panel {
+  background: rgba(11, 20, 32, 0.88) !important;
+  border: 1px solid rgba(20, 184, 166, 0.18) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text) !important;
+}
+
+.ai-forecast-panel h2 {
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+}
+
+.health-monitor-panel {
+  gap: 1rem !important;
+}
+
+.health-card {
+  background: rgba(11, 20, 32, 0.88) !important;
+  border: 1px solid rgba(20, 184, 166, 0.18) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text) !important;
+  padding: 1.1rem 1.2rem !important;
+}
+
+/* Heatmap pulse — less aggressive */
+.heat-zone {
+  animation: heat-pulse 3s ease-in-out infinite !important;
+}
+
+@keyframes heat-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.75; }
+  50%       { transform: scale(1.1); opacity: 1; }
+}
+
+/* ==========================================================================
+   10. NOTIFICATION PANEL — Responsive + Color Alignment
+   ========================================================================== */
+
+/* Panel scrollbar teal */
+.notification-panel::-webkit-scrollbar-thumb {
+  background: rgba(20, 184, 166, 0.12) !important;
+}
+
+/* Header total count */
+#notification-total {
+  font-size: 0.65rem;
+  color: var(--text-mute);
+  font-weight: 500;
+}
+
+/* Notification item border */
+.notification-item {
+  border-bottom-color: rgba(20, 184, 166, 0.08) !important;
+}
+
+/* ==========================================================================
+   11. MODALS — Final Polish
+   ========================================================================== */
+
+/* Ensure modal doesn't overflow viewport */
+.modal-overlay {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.modal {
+  margin: auto;
+  width: min(90vw, 640px);
+}
+
+/* Modal field select consistency */
+.modal__field select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  color: var(--text);
+  background: rgba(7, 14, 24, 0.75);
+  border: 1px solid rgba(20, 184, 166, 0.18);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color var(--dur-base) var(--ease);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.modal__field select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+}
+
+/* Submit / action buttons in modals */
+.modal__btn--primary {
+  background: linear-gradient(135deg, var(--cyan), var(--blue)) !important;
+  color: var(--bg-deep) !important;
+  border: none !important;
+  padding: 0.65rem 1.6rem !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-sm) !important;
+  cursor: pointer !important;
+  transition: opacity var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease-spring) !important;
+}
+
+.modal__btn--primary:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+}
+
+.modal__btn--danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: var(--red) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  padding: 0.65rem 1.4rem !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-sm) !important;
+  cursor: pointer !important;
+  transition: background var(--dur-base) var(--ease) !important;
+}
+
+.modal__btn--danger:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ==========================================================================
+   12. SECTION SEPARATION — Final Breathing Room
+   ========================================================================== */
+
+/* Consistent section-head for all sections */
+.section-head {
+  margin-bottom: 1rem;
+  padding-bottom: 0;
+}
+
+/* Guarantee proper spacing in .main flex column */
+.main {
+  gap: 1.75rem;
+  padding-bottom: 3rem;
+}
+
+/* ==========================================================================
+   13. FOOTER — Clean minimal line
+   ========================================================================== */
+.footer {
+  margin-top: auto;
+  padding: 1.1rem 1.75rem;
+  border-top: 1px solid rgba(20, 184, 166, 0.08);
+}
+
+.footer p {
+  font-size: 0.68rem;
+  color: var(--text-mute);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   14. FAB GROUP — Mobile safety
+   ========================================================================== */
+.fab-group {
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 300;
+}
+
+/* ==========================================================================
+   15. SCROLL PERFORMANCE — will-change guards
+   ========================================================================== */
+
+/* Apply will-change only to actively animated elements */
+.atmosphere__orb {
+  will-change: transform;
+}
+
+.sidebar {
+  will-change: width, transform;
+}
+
+/* Prevent paint thrash on activity feed items */
+.activity-feed,
+.activity-log-list {
+  contain: content;
+}
+
+/* ==========================================================================
+   16. RESPONSIVE — FINAL CONSOLIDATED BREAKPOINTS
+   ========================================================================== */
+
+/* ── Large desktop: 1400px+ keeps all defaults ── */
+
+/* ── Mid desktop: 1280px ── */
+@media (max-width: 1280px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .charts-bento {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel--wide {
+    grid-column: span 2;
+  }
+
+  .intel-row {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 0.9rem;
+  }
+
+  .intel-row .section--feed:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Laptop: 1100px ── */
+@media (max-width: 1100px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .intel-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .intel-row .section--feed:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .charts-bento {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel--wide {
+    grid-column: span 2;
+  }
+
+  .port-map {
+    min-height: 380px;
+  }
+
+  .port-map__svg {
+    min-height: 360px;
+  }
+}
+
+/* ── Small laptop / tablet landscape: 900px ── */
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .intel-row {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .charts-bento {
+    grid-template-columns: 1fr;
+  }
+
+  .panel--wide {
+    grid-column: span 1;
+  }
+
+  .port-map {
+    min-height: 320px;
+  }
+
+  .port-map__svg {
+    min-height: 300px;
+  }
+
+  .main {
+    gap: 1.25rem;
+    padding: 1.1rem 1.25rem 2.5rem;
+  }
+}
+
+/* ── Tablet portrait: 768px ── */
+@media (max-width: 768px) {
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .main {
+    padding: 1rem 1rem 2.5rem;
+    gap: 1rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .port-map {
+    min-height: 280px;
+  }
+
+  .port-map__svg {
+    min-height: 260px;
+  }
+
+  .map-radar {
+    display: none; /* Too cramped on tablet/mobile */
+  }
+
+  /* Section heads compact on mobile */
+  .section-head--row {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .map-legend {
+    gap: 0.75rem;
+    font-size: 0.6rem;
+  }
+
+  /* Topbar compress */
+  .topbar__clock,
+  .topbar__user {
+    display: none;
+  }
+
+  .topbar__live {
+    display: none;
+  }
+
+  .topbar__actions {
+    gap: 0.5rem;
+  }
+
+  /* Notification panel full-width on mobile */
+  .notification-panel {
+    width: calc(100vw - 2rem) !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    max-height: 70vh;
+  }
+
+  /* Charts single column */
+  .charts-bento {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .panel--wide {
+    grid-column: span 1;
+  }
+
+  /* Chart heights reduced on mobile */
+  .chart-wrap {
+    height: 180px;
+  }
+
+  .chart-wrap--lg {
+    height: 200px;
+  }
+
+  /* Modal grid single column */
+  .modal__grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .modal {
+    padding: 1.25rem;
+    width: 95vw;
+  }
+
+  /* Table scroll improvement */
+  .table-scroll {
+    max-height: 360px;
+  }
+}
+
+/* ── Mobile: 480px ── */
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .kpi-card {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .kpi-card__value {
+    font-size: 1.3rem;
+  }
+
+  .kpi-card__icon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .port-map {
+    min-height: 240px;
+  }
+
+  .port-map__svg {
+    min-height: 220px;
+  }
+
+  .main {
+    padding: 0.75rem 0.75rem 2rem;
+  }
+
+  .intel-row {
+    gap: 0.65rem;
+  }
+
+  .activity-feed {
+    max-height: 220px;
+  }
+
+  .activity-log-list {
+    max-height: 220px;
+  }
+
+  /* Topbar very compact */
+  .topbar {
+    height: 56px;
+    padding: 0 0.85rem;
+  }
+
+  .topbar__search-wrap {
+    display: none;
+  }
+
+  .fab-group {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .fab {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ==========================================================================
+   17. PRINT SAFETY
+   ========================================================================== */
+@media print {
+  .sidebar,
+  .topbar,
+  .fab-group,
+  .notification-panel,
+  .atmosphere {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .main {
+    padding: 0 !important;
+  }
+}
+
+/* ==========================================================================
+   18. FOCUS ACCESSIBILITY — Enterprise keyboard nav
+   ========================================================================== */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   19. FINAL VISUAL CONSISTENCY PATCHES
+   ========================================================================== */
+
+/* Section tag consistency */
+.section-tag {
+  display: inline-block;
+}
+
+/* Ensure panel overflow is always clipped cleanly */
+.panel {
+  overflow: hidden;
+}
+
+/* Map section header row alignment */
+#port-map .section-head.section-head--row {
+  align-items: center;
+}
+
+/* Intel row section panels — consistent height feel */
+.section--ai,
+.section--feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.section--ai .ai-panel,
+.section--feed .activity-feed,
+.section--feed .activity-log-list {
+  flex: 1;
+}
+
+/* Dashboard main column flow — prevent orphan sections */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Sidebar footer version tag */
+.sidebar__ver {
+  font-size: 0.58rem;
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+
+/* Empty state text alignment */
+.activity-log-empty,
+.notification-empty {
+  color: var(--text-mute);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Sidebar brand tag */
+.sidebar__brand-tag {
+  font-size: 0.6rem;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   20. PERFORMANCE MICRO-OPTIMIZATIONS
+   ========================================================================== */
+
+/* GPU-accelerate only elements that actually animate */
+.atmosphere__orb,
+.map-radar,
+.brand-logo__glow,
+.skeleton-loader__pulse {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent FOUC on chart canvases */
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* Reduce transition scope on non-interactive elements */
+.atmosphere__grid,
+.atmosphere__scan {
+  transition: none;
+}
+
+/* ==========================================================================
+   END NexPort Nexus — Phase 4: Final Enterprise Stabilization
+   Version: v4.0 FINAL | Tanjung Priok Smart Port Intelligence Platform
+   ========================================================================== */

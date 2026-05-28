@@ -1,0 +1,458 @@
+/* ==========================================================================
+   NexPort Nexus — Notification System Polish Patch v2 (FINAL)
+   Phase 1 Complete: Badge · Panel · Items · Toast · Responsive
+   Loads AFTER style.css + enhancements.css — wins all specificity battles
+   ========================================================================== */
+
+/* ------------------------------------------------------------------
+   NOTIFICATION BUTTON
+   ------------------------------------------------------------------ */
+.notification-btn {
+  position: relative !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  background: rgba(255,255,255,0.03) !important;
+  color: white !important;
+  cursor: pointer !important;
+  font-size: 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.notification-btn:hover {
+  background: rgba(60,242,255,0.09) !important;
+  border-color: rgba(60,242,255,0.28) !important;
+  transform: translateY(-1px) !important;
+}
+
+.notification-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* ------------------------------------------------------------------
+   UNREAD BADGE — hidden by default, pops in when has-unread
+   ------------------------------------------------------------------ */
+.notification-count {
+  position: absolute !important;
+  top: -5px !important;
+  right: -5px !important;
+  background: #ff3d54 !important;
+  color: #fff !important;
+  font-size: 0.6rem !important;
+  font-weight: 800 !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 3px !important;
+  line-height: 1 !important;
+  /* Hidden by default */
+  opacity: 0 !important;
+  transform: scale(0.5) !important;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.5) !important;
+  pointer-events: none !important;
+  border: 1.5px solid #070f1a !important;
+}
+
+.notification-count.has-unread {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* ------------------------------------------------------------------
+   NOTIFICATION PANEL — compact dropdown, smooth enter/exit
+   ------------------------------------------------------------------ */
+.notification-panel {
+  position: fixed !important;
+  top: 72px !important;
+  right: 1.25rem !important;
+  width: 296px !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  border-radius: 16px !important;
+  background: rgba(6,16,30,0.98) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  padding: 0.8rem !important;
+  z-index: 1500 !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(60,242,255,0.035) !important;
+
+  /* CSS-only open/close — no display:none needed */
+  opacity: 0 !important;
+  transform: translateY(-10px) scale(0.975) !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.22s !important;
+  display: block !important;
+}
+
+.notification-panel.is-open {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: all !important;
+  visibility: visible !important;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0s !important;
+}
+
+/* Thin scrollbar */
+.notification-panel::-webkit-scrollbar { width: 3px; }
+.notification-panel::-webkit-scrollbar-track { background: transparent; }
+.notification-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
+.notification-panel { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; }
+
+/* ------------------------------------------------------------------
+   PANEL HEADER
+   ------------------------------------------------------------------ */
+.notification-panel__header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 0.7rem !important;
+  padding-bottom: 0.6rem !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  gap: 0.5rem !important;
+}
+
+.notification-panel__header h3 {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.85) !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+#notification-total {
+  font-size: 0.65rem !important;
+  color: rgba(255,255,255,0.3) !important;
+  font-weight: 500 !important;
+}
+
+/* Injected action buttons row */
+.notification-panel__actions {
+  display: flex !important;
+  gap: 0.35rem !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.notif-action-btn {
+  background: none !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  color: rgba(255,255,255,0.38) !important;
+  font-size: 0.62rem !important;
+  font-weight: 600 !important;
+  padding: 0.22rem 0.5rem !important;
+  border-radius: 7px !important;
+  cursor: pointer !important;
+  transition: all 0.16s ease !important;
+  white-space: nowrap !important;
+  letter-spacing: 0.02em !important;
+}
+
+.notif-action-btn:hover {
+  border-color: rgba(255,77,99,0.45) !important;
+  color: #ff5d73 !important;
+  background: rgba(255,77,99,0.08) !important;
+}
+
+/* ------------------------------------------------------------------
+   NOTIFICATION ITEMS — compact, with per-item delete
+   ------------------------------------------------------------------ */
+.notification-item {
+  position: relative !important;
+  padding: 0.6rem 2rem 0.6rem 0.7rem !important;
+  border-radius: 10px !important;
+  margin-bottom: 0.42rem !important;
+  background: rgba(255,255,255,0.025) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  overflow: hidden !important;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    max-height 0.32s cubic-bezier(0.4,0,0.2,1),
+    padding 0.32s ease,
+    margin 0.32s ease !important;
+}
+
+.notification-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.notification-item:hover {
+  background: rgba(255,255,255,0.045) !important;
+}
+
+.notification-item strong {
+  display: block !important;
+  font-size: 0.73rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.15rem !important;
+  color: rgba(255,255,255,0.88) !important;
+  line-height: 1.3 !important;
+}
+
+.notification-item p {
+  font-size: 0.67rem !important;
+  color: rgba(255,255,255,0.45) !important;
+  margin: 0 0 0.18rem 0 !important;
+  line-height: 1.4 !important;
+}
+
+.notification-item small {
+  font-size: 0.6rem !important;
+  color: rgba(255,255,255,0.25) !important;
+}
+
+.notification-item--danger { border-color: rgba(255,77,99,0.25) !important; }
+.notification-item--success { border-color: rgba(74,222,128,0.2) !important; }
+.notification-item--info { border-color: rgba(60,242,255,0.16) !important; }
+
+/* Left accent line */
+.notification-item--danger::before,
+.notification-item--success::before,
+.notification-item--info::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 2px;
+  border-radius: 0 2px 2px 0;
+}
+.notification-item--danger::before  { background: rgba(255,77,99,0.7); }
+.notification-item--success::before { background: rgba(74,222,128,0.6); }
+.notification-item--info::before    { background: rgba(60,242,255,0.5); }
+
+/* Per-item delete button */
+.notif-delete-btn {
+  position: absolute !important;
+  top: 50% !important;
+  right: 0.45rem !important;
+  transform: translateY(-50%) !important;
+  background: none !important;
+  border: none !important;
+  color: rgba(255,255,255,0.18) !important;
+  cursor: pointer !important;
+  padding: 0.2rem 0.25rem !important;
+  border-radius: 5px !important;
+  font-size: 0.72rem !important;
+  line-height: 1 !important;
+  opacity: 0 !important;
+  transition: opacity 0.14s ease, color 0.14s ease, background 0.14s ease !important;
+}
+
+.notification-item:hover .notif-delete-btn {
+  opacity: 1 !important;
+}
+
+.notif-delete-btn:hover {
+  color: #ff5d73 !important;
+  background: rgba(255,77,99,0.12) !important;
+}
+
+/* Removal animation */
+.notification-item.is-removing {
+  opacity: 0 !important;
+  transform: translateX(14px) !important;
+  max-height: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-width: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Slide-in for new items */
+@keyframes nex-notif-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.notification-item.is-new {
+  animation: nex-notif-in 0.22s ease forwards !important;
+}
+
+/* Unread dot on new items */
+.notification-item.is-unread::after {
+  content: '';
+  position: absolute;
+  top: 0.6rem;
+  right: 1.7rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #3cf2ff;
+  opacity: 0.8;
+}
+
+/* Empty state */
+.notification-empty {
+  text-align: center !important;
+  font-size: 0.7rem !important;
+  color: rgba(255,255,255,0.22) !important;
+  padding: 1.5rem 0.5rem !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* ------------------------------------------------------------------
+   TOAST — bottom-right, compact, enterprise
+   ------------------------------------------------------------------ */
+.toast-container {
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  top: auto !important;
+  z-index: 9500 !important;
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  gap: 0.45rem !important;
+  max-width: 310px !important;
+  width: 310px !important;
+  pointer-events: none !important;
+}
+
+.toast {
+  position: relative !important;
+  padding: 0.72rem 2.2rem 0.72rem 0.9rem !important;
+  background: rgba(8,20,36,0.98) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 11px !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45) !important;
+  pointer-events: all !important;
+  user-select: none !important;
+  cursor: grab !important;
+  opacity: 0 !important;
+  transform: translateX(110%) !important;
+  animation: nex-toast-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  transition: opacity 0.28s ease, transform 0.28s ease !important;
+}
+
+.toast--congestion { border-left: 3px solid #f97316 !important; }
+.toast--delay      { border-left: 3px solid #ff3d54 !important; }
+.toast--success    { border-left: 3px solid #4ade80 !important; }
+.toast--info       { border-left: 3px solid #3cf2ff !important; }
+
+.toast__title {
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.9) !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+
+.toast__msg {
+  font-size: 0.67rem !important;
+  color: rgba(255,255,255,0.45) !important;
+  margin: 0.12rem 0 0 0 !important;
+  line-height: 1.4 !important;
+}
+
+/* Close ✕ button */
+.toast__close {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  background: none !important;
+  border: none !important;
+  color: rgba(255,255,255,0.22) !important;
+  cursor: pointer !important;
+  font-size: 0.78rem !important;
+  padding: 0.18rem 0.22rem !important;
+  line-height: 1 !important;
+  border-radius: 4px !important;
+  transition: color 0.14s ease, background 0.14s ease !important;
+  pointer-events: all !important;
+}
+
+.toast__close:hover {
+  color: rgba(255,255,255,0.75) !important;
+  background: rgba(255,255,255,0.08) !important;
+}
+
+/* Auto-dismiss progress bar */
+.toast__progress {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 2px !important;
+  background: rgba(255,255,255,0.12) !important;
+  border-radius: 0 0 11px 11px !important;
+  animation: nex-toast-progress var(--toast-duration, 4000ms) linear forwards !important;
+}
+
+@keyframes nex-toast-progress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+@keyframes nex-toast-in {
+  from { opacity: 0; transform: translateX(110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes nex-toast-out {
+  to { opacity: 0; transform: translateX(115%); }
+}
+
+@keyframes nex-toast-out-up {
+  to { opacity: 0; transform: translateY(-10px) scale(0.95); }
+}
+
+.toast.is-leaving {
+  animation: nex-toast-out 0.28s ease forwards !important;
+}
+
+.toast.is-leaving-up {
+  animation: nex-toast-out-up 0.22s ease forwards !important;
+}
+
+.toast.is-dragging {
+  cursor: grabbing !important;
+  transition: none !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.55) !important;
+}
+
+/* ------------------------------------------------------------------
+   RESPONSIVE — mobile adjustments
+   ------------------------------------------------------------------ */
+@media (max-width: 600px) {
+  .notification-panel {
+    right: 0.75rem !important;
+    left: 0.75rem !important;
+    width: auto !important;
+    max-height: 55vh !important;
+  }
+
+  .toast-container {
+    right: 0.75rem !important;
+    left: 0.75rem !important;
+    max-width: none !important;
+    width: auto !important;
+    bottom: 1rem !important;
+  }
+
+  .toast {
+    border-radius: 10px !important;
+  }
+}

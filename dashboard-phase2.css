@@ -1,0 +1,616 @@
+/* ==========================================================================
+   NexPort Nexus — Phase 2 Dashboard Layout & UI Refinement Patch
+   File: dashboard-phase2.css
+   Scope: Tactical Map Hero · Dashboard Hierarchy · KPI Refinement ·
+          Intelligence Panel · Activity Feed · Spacing · Typography
+   Rules: Additive patch only. Preserves all Phase 1 + existing systems.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. ROOT — Enhanced Design Tokens
+   ========================================================================== */
+:root {
+  /* Refined spacing scale */
+  --space-xs: 0.5rem;
+  --space-sm: 0.85rem;
+  --space-md: 1.25rem;
+  --space-lg: 1.75rem;
+  --space-xl: 2.5rem;
+
+  /* Hierarchy typography */
+  --text-hero: 2rem;
+  --text-section: 1.35rem;
+  --text-panel: 0.88rem;
+  --text-label: 0.6rem;
+  --text-meta: 0.68rem;
+
+  /* Premium glow layers */
+  --glow-map: 0 0 60px rgba(60, 242, 255, 0.18), 0 0 120px rgba(60, 242, 255, 0.08);
+  --glow-kpi: 0 0 20px rgba(60, 242, 255, 0.1);
+  --border-active: rgba(60, 242, 255, 0.5);
+
+  /* Section divider */
+  --divider: 1px solid rgba(60, 242, 255, 0.1);
+}
+
+/* ==========================================================================
+   2. MAIN LAYOUT — Tighter Operational Flow
+   ========================================================================== */
+.main {
+  padding: 1.25rem 1.5rem 2.5rem;
+  gap: 2rem;
+}
+
+/* Section breathing room */
+.section {
+  position: relative;
+}
+
+/* ==========================================================================
+   3. OVERVIEW / KPI — Compact Enterprise Analytics
+   ========================================================================== */
+#overview {
+  padding-bottom: 0;
+}
+
+#overview .section-head {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* KPI grid — tighter, more compact */
+.kpi-grid {
+  gap: 0.85rem;
+}
+
+/* KPI Cards — compact premium style */
+.kpi-card {
+  padding: 1rem 1.1rem;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-deep), var(--glow-kpi);
+  border-color: rgba(60, 242, 255, 0.35);
+}
+
+/* KPI icon — slightly smaller */
+.kpi-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  font-size: 0.95rem;
+  margin-bottom: 0.65rem;
+}
+
+/* KPI label — cleaner micro typography */
+.kpi-card__label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+  margin-bottom: 0.2rem;
+}
+
+/* KPI value — strong emphasis */
+.kpi-card__value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0.1rem 0 0.2rem;
+}
+
+/* KPI delta — subtle */
+.kpi-card__delta {
+  font-size: 0.62rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   4. TACTICAL MAP — HERO SECTION (THE CENTERPIECE)
+   ========================================================================== */
+#port-map {
+  /* Map rises above everything else visually */
+  order: -1; /* Rearranged via flex only if inside flex container — fallback handled below */
+}
+
+/* Cinematic map section header */
+#port-map .section-head {
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+#port-map .section-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--text) 0%, var(--cyan) 60%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Map panel — hero-grade treatment */
+.panel--map {
+  border-color: rgba(60, 242, 255, 0.3);
+  box-shadow: var(--glow-map), var(--shadow-deep);
+  background: linear-gradient(180deg, rgba(7, 17, 31, 0.9) 0%, rgba(10, 26, 48, 0.85) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cinematic top-edge glow on map panel */
+.panel--map::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
+  opacity: 0.9;
+  box-shadow: 0 0 20px var(--cyan);
+  pointer-events: none;
+}
+
+/* Map container — taller, more immersive */
+.port-map {
+  min-height: 480px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 25%, rgba(60, 242, 255, 0.07), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(77, 168, 255, 0.04), transparent 60%);
+}
+
+.port-map__svg {
+  min-height: 460px;
+}
+
+/* HUD bar — more tactical */
+.map-hud {
+  padding: 0.75rem 1.35rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  background: rgba(7, 17, 31, 0.75);
+  border-bottom: 1px solid rgba(60, 242, 255, 0.18);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Inline map status dots in HUD */
+.map-hud span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.map-hud span::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  animation: pulse-text 2s ease infinite;
+  flex-shrink: 0;
+}
+
+/* Map legend — compact tactical style */
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-soft);
+  padding: 0.45rem 0.85rem;
+  background: rgba(7, 17, 31, 0.5);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+}
+
+.map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot--low {
+  background: var(--emerald);
+  box-shadow: 0 0 6px var(--emerald);
+}
+
+.legend-dot--mid {
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange);
+}
+
+.legend-dot--high {
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+}
+
+/* Radar — bigger, more cinematic */
+.map-radar {
+  width: 180px;
+  height: 180px;
+  margin: -90px 0 0 -90px;
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   5. DASHBOARD FLOW — Sections retain natural HTML order
+      (HTML was physically reordered in Phase 2 — no CSS order needed)
+   ========================================================================== */
+
+/* ==========================================================================
+   6. INTEL ROW — AI Insights + Activity Stream
+   ========================================================================== */
+.intel-row {
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 1.1rem;
+  align-items: start;
+}
+
+/* AI panel — compact intelligence sidebar feel */
+.section--ai {
+  background: rgba(7, 17, 31, 0.4);
+  border: 1px solid rgba(60, 242, 255, 0.2);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+}
+
+.section--ai .section-head {
+  padding-bottom: 0.65rem;
+  border-bottom: var(--divider);
+  margin-bottom: 0.85rem;
+}
+
+/* AI insights — tighter cards */
+.ai-insight {
+  padding: 0.8rem 0.9rem;
+  border-radius: 9px;
+  gap: 0.7rem;
+}
+
+.ai-insight__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.ai-insight__text {
+  font-size: 0.79rem;
+  line-height: 1.45;
+}
+
+.ai-insight__conf {
+  font-size: 0.58rem;
+  margin-top: 0.25rem;
+}
+
+/* Activity feed panels — unified style */
+.section--feed {
+  background: rgba(7, 17, 31, 0.4);
+  border: 1px solid rgba(60, 242, 255, 0.15);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+}
+
+.section--feed .section-head {
+  padding-bottom: 0.65rem;
+  border-bottom: var(--divider);
+  margin-bottom: 0.85rem;
+}
+
+/* Activity feed — cleaner, more scannable */
+.activity-feed {
+  max-height: 280px;
+  gap: 0.4rem;
+}
+
+.activity-item {
+  padding: 0.6rem 0.85rem;
+  gap: 0.6rem;
+  font-size: 0.77rem;
+  border-radius: 0 7px 7px 0;
+  border-left-width: 2px;
+}
+
+.activity-item__time {
+  font-size: 0.62rem;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  color: var(--text-soft);
+  opacity: 0.7;
+}
+
+/* Activity log list — cleaner spacing */
+.activity-log-list {
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* ==========================================================================
+   7. SECTION HEADERS — Premium Typography Hierarchy
+   ========================================================================== */
+
+/* Primary section titles — scaled down for breathing room */
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.section-title--sm {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Section tag — crisp enterprise label */
+.section-tag {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  opacity: 0.85;
+  margin-bottom: 0.25rem;
+}
+
+/* Section description — softer, smaller */
+.section-desc {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  margin-top: 0.15rem;
+  opacity: 0.8;
+}
+
+/* Panel headers */
+.panel__head h3 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ==========================================================================
+   8. ANALYTICS CHARTS — Balanced Bento
+   ========================================================================== */
+#analytics .section-head {
+  margin-bottom: 1rem;
+}
+
+.charts-bento {
+  gap: 1rem;
+}
+
+.panel--chart {
+  padding: 1.1rem;
+}
+
+.chart-wrap {
+  height: 200px;
+}
+
+.chart-wrap--lg {
+  height: 240px;
+}
+
+/* ==========================================================================
+   9. SECTION SEPARATORS — Visual Hierarchy Breaks
+   ========================================================================== */
+
+/* Subtle divider rule above each major section */
+#port-map::before,
+#analytics::before,
+#monitoring::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(60, 242, 255, 0.15), transparent);
+  margin-bottom: 2rem;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   10. PANEL GLASS — Refined depth treatment
+   ========================================================================== */
+.panel {
+  padding: 1.2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(60, 242, 255, 0.06) inset;
+}
+
+.panel::before {
+  opacity: 0.5;
+}
+
+.panel:hover {
+  border-color: rgba(60, 242, 255, 0.35);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), var(--glow-soft);
+  transform: none; /* Remove vertical jump on panels */
+}
+
+/* Table panels — no translate */
+.panel--table:hover,
+.panel--map:hover {
+  transform: none;
+}
+
+/* ==========================================================================
+   11. TOPBAR REFINEMENT — Cleaner Header Hierarchy
+   ========================================================================== */
+.topbar {
+  height: 62px;
+  padding: 0 1.35rem;
+  gap: 0.85rem;
+}
+
+.topbar__live {
+  font-size: 0.6rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.topbar__clock {
+  font-size: 0.74rem;
+  padding: 0.35rem 0.75rem;
+}
+
+/* ==========================================================================
+   12. META CHIP — Tighter enterprise badges
+   ========================================================================== */
+.meta-chip {
+  font-size: 0.62rem;
+  padding: 0.28rem 0.65rem;
+}
+
+/* ==========================================================================
+   13. TABLE SECTIONS — Cleaner data hierarchy
+   ========================================================================== */
+#monitoring .section-head,
+#vehicles-monitoring .section-head {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0;
+}
+
+.table-toolbar {
+  padding: 0.75rem 1rem;
+}
+
+/* ==========================================================================
+   14. SECTION SPACING — Balanced layout gap
+   ========================================================================== */
+.main {
+  gap: 1.75rem;
+}
+
+/* ==========================================================================
+   15. ACTIVITY LOG ITEMS — Enterprise feed style
+   ========================================================================== */
+.activity-log-item {
+  display: flex;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(7, 17, 31, 0.4);
+  border-left: 2px solid rgba(60, 242, 255, 0.25);
+  border-radius: 0 7px 7px 0;
+  font-size: 0.76rem;
+  color: var(--text);
+  line-height: 1.45;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.activity-log-item:hover {
+  border-color: var(--cyan);
+  background: rgba(60, 242, 255, 0.05);
+}
+
+.activity-log-item__time {
+  font-size: 0.6rem;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  opacity: 0.65;
+  white-space: nowrap;
+}
+
+.activity-log-empty {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  text-align: center;
+  padding: 1.5rem;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   16. RESPONSIVE OVERRIDES — Phase 2 breakpoints
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+  .intel-row {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .intel-row .section--feed:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .port-map {
+    min-height: 420px;
+  }
+
+  .port-map__svg {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .intel-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .port-map {
+    min-height: 360px;
+  }
+
+  .port-map__svg {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 900px) {
+  .port-map {
+    min-height: 300px;
+  }
+
+  .port-map__svg {
+    min-height: 280px;
+  }
+
+  .main {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .port-map {
+    min-height: 260px;
+  }
+
+  .port-map__svg {
+    min-height: 240px;
+  }
+}
+
+/* ==========================================================================
+   END NexPort Nexus — Phase 2 Dashboard Refinement Patch
+   ========================================================================== */
