@@ -64,7 +64,8 @@ body.sidebar-collapsed .sidebar__footer span:not(.pulse-ring) {
    3. TOPBAR — Overflow & Alignment
    ========================================================================== */
 .topbar {
-  overflow: hidden; /* Prevent topbar from bleeding */
+  /* HOTFIX: changed overflow:hidden → visible so profile-dropdown can escape topbar bounds */
+  overflow: visible;
 }
 
 .topbar__actions {
@@ -163,21 +164,25 @@ body.sidebar-collapsed .sidebar__footer span:not(.pulse-ring) {
 }
 
 /* Activity feed — prevent text overflow */
+/* HOTFIX: overflow:hidden collapsed flex items; use min-width:0 only to prevent blowout */
 .activity-item {
   min-width: 0;
-  overflow: hidden;
+  /* overflow: hidden removed — was collapsing activity cards */
 }
 
 .activity-item > span,
 .activity-item > div {
   min-width: 0;
+  flex: 1;          /* HOTFIX: allow text span to grow and be visible */
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Activity log items — text safety */
+/* HOTFIX: overflow:hidden removed — was collapsing log item content */
 .activity-log-item {
-  overflow: hidden;
+  min-width: 0;
 }
 
 .activity-log-item__time {
@@ -482,10 +487,11 @@ body.sidebar-collapsed .sidebar__footer span:not(.pulse-ring) {
   will-change: width, transform;
 }
 
-/* Prevent paint thrash on activity feed items */
+/* HOTFIX: contain:content was restricting paint boundary and suppressing activity item visibility.
+   Downgraded to contain:layout style to preserve perf benefit without clipping content. */
 .activity-feed,
 .activity-log-list {
-  contain: content;
+  contain: layout style;
 }
 
 /* ==========================================================================
